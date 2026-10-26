@@ -1,16 +1,100 @@
 
-name: Recibir promociones de Power Automate
+name: Actualizar catalogo Efectivamente
 
 on:
   repository_dispatch:
     types: [actualizar_promociones]
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: actualizar-catalogo
+  cancel-in-progress: false
 
 jobs:
-  verificar_conexion:
+  actualizar_catalogo:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Confirmar recepcion del evento
-        run: echo "Conexion Power Automate - GitHub exitosa"
+      - name: Obtener repositorio
+        uses: actions/checkout@v4
+
+      - name: Generar promociones.json
+        env:
+          EVENT_FILE: ${{ github.event_path }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from datetime import date
+
+          with open(os.environ["EVENT_FILE"], encoding="utf-8") as f:
+              evento = json.load(f)
+
+          comercios = evento.get("client_payload", {}).get("comercios")
+
+          if not isinstance(comercios, list) or not comercios:
+              raise ValueError("Catalogo vacio o invalido")
+
+          resultado = []
+          ids = set()
+
+          for c in comercios:
+              if not isinstance(c, dict):
+                  raise ValueError("Registro invalido")
+
+              identificador = str(c.get("idComercio") or "").strip()
+              nombre = str(c.get("nombreComercio") or "").strip()
+
+              if not identificador or not nombre:
+                  raise ValueError("Falta ID o nombre de comercio")
+
+              if identificador in ids:
+                  raise ValueError("ID de comercio duplicado: " + identificador)
+
+              ids.add(identificador)
+
+              if c.get("estado") != "Aprobado":
+                  continue
+
+              inicio = c.get("fechaInicio")
+              fin = c.get("fechaFin")
+
+              try:
+                  fecha_inicio = date.fromisoformat(inicio) if inicio else None
+                  fecha_fin = date.fromisoformat(fin) if fin else None
+              except (ValueError, TypeError):
+                  raise ValueError("Fecha invalida en comercio " + identificador)
+
+              if fecha_inicio and fecha_fin and fecha_inicio > fecha_fin:
+                  raise ValueError("Fechas invertidas en comercio " + identificador)
+
+              if str(c.get("descuento") or "0") == "0":
+                  c["descuento"] = None
+
+              for campo in ("descripcionBeneficio", "condiciones"):
+                  if c.get(campo) in (0, "0", ""):
+                      c[campo] = None
+
+              resultado.append(c)
+
+          if not resultado:
+              raise ValueError("No hay comercios aprobados")
+
+          with open("promociones.json", "w", encoding="utf-8") as f:
+              json.dump(resultado, f, ensure_ascii=False, indent=2)
+
+          print("Comercios preparados:", len(resultado))
+          PY
+
+      - name: Publicar actualizacion
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add promociones.json
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Actualizar promociones desde Microsoft Lists"
+            git push
+          fi
