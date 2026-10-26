@@ -1,0 +1,16 @@
+
+name: Recibir promociones de Power Automate
+
+on:
+  repository_dispatch:
+    types: [actualizar_promociones]
+
+permissions:
+  contents: read
+
+jobs:
+  verificar_conexion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirmar recepcion del evento
+        run: echo "Conexion Power Automate - GitHub exitosa"
