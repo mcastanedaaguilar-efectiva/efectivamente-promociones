@@ -1,0 +1,13 @@
+[
+  {
+    "idComercio": "PRUEBA001",
+    "nombreComercio": "COMERCIO DE PRUEBA",
+    "provincia": "NEUQUEN",
+    "localidad": "NEUQUEN",
+    "direccion": "DIRECCION DE PRUEBA",
+    "rubro": "Indumentaria",
+    "tipoPromocion": "3 cuotas sin interés",
+    "descuento": 0,
+    "estado": "Aprobado"
+  }
+]
