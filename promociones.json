@@ -1136,7 +1136,7 @@
     "tipoPromocion": "3 cuotas sin interés"
   },
   {
-    "condiciones": "prueba numero 2 para ver si cambio la salida bien",
+    "condiciones": null,
     "descripcionBeneficio": "EN VINILOS",
     "descuento": 70,
     "diasAplicacion": "Lunes a viernes",
