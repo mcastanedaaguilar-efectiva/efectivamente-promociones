@@ -1134,21 +1134,5 @@
     "provincia": "NEUQUEN",
     "rubro": "Indumentaria",
     "tipoPromocion": "3 cuotas sin interés"
-  },
-  {
-    "condiciones": null,
-    "descripcionBeneficio": "EN VINILOS",
-    "descuento": 70,
-    "diasAplicacion": "Lunes a viernes",
-    "direccion": "MANUEL ESTRADA 1724",
-    "estado": "Aprobado",
-    "fechaFin": "2026-10-31",
-    "fechaInicio": "2026-10-27",
-    "idComercio": "1234",
-    "localidad": "CIPOLLETTI",
-    "nombreComercio": "DUMA",
-    "provincia": "RIO NEGRO",
-    "rubro": "GRAFICA",
-    "tipoPromocion": "Descuento porcentual"
   }
 ]
