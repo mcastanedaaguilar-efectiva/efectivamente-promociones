@@ -1134,5 +1134,21 @@
     "provincia": "NEUQUEN",
     "rubro": "Indumentaria",
     "tipoPromocion": "3 cuotas sin interés"
+  },
+  {
+    "condiciones": null,
+    "descripcionBeneficio": "EN TODA LA TIENDA",
+    "descuento": 15,
+    "diasAplicacion": "Lunes a viernes",
+    "direccion": "ALCORTA 139",
+    "estado": "Aprobado",
+    "fechaFin": null,
+    "fechaInicio": null,
+    "idComercio": "900",
+    "localidad": "NEUQUEN",
+    "nombreComercio": "LIBRERÍA ALCORTA",
+    "provincia": "NEUQUEN",
+    "rubro": "LIBRERIA",
+    "tipoPromocion": "Descuento porcentual"
   }
 ]
